@@ -1,0 +1,97 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Apphia_Website_API.Repository.Interface;
+using Apphia_Website_API.Repository.Interface.Transaction;
+using Apphia_Website_API.Repository.ViewModel.Transaction;
+using Apphia_Website_API.Repository.Model.Audit;
+using Apphia_Website_API.Repository.Configuration.Attribute_Extender;
+using Apphia_Website_API.Repository.Configuration.Enum;
+
+namespace Apphia_Website_API.Controllers.Transaction {
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ContactController : BaseController {
+        private readonly IContactService _contactService;
+        private readonly IAuditGenericService<ContactAudit> _auditService;
+
+        public ContactController(
+            IContactService contactService,
+            IAuditGenericService<ContactAudit> auditService,
+            IConfiguration configuration,
+            IAuditLogService auditLogService,
+            IRequestStatusHelper requestStatusHelper
+        ) : base(configuration, auditLogService, requestStatusHelper) {
+            _contactService = contactService;
+            _auditService = auditService;
+        }
+
+        [HttpPost("ContactUs")]
+        public async Task<IActionResult> ContactUs([FromBody] ContactUsViewModel model) {
+            try {
+                var result = await _contactService.Create(model);
+                return StatusCode(200, _requestStatusHelper.response(200, true, "Message sent successfully", result, null));
+            } catch (Exception ex) {
+                return await HandleException(ex, "ContactController.ContactUs", 500, "Internal Server Error");
+            }
+        }
+
+        [Authorize]
+        [Control(AccessType.Read, Policies.Contact)]
+        [HttpGet("Read")]
+        public async Task<IActionResult> Read([FromQuery] int isActive, [FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string? filter, [FromQuery] string? sort) {
+            try {
+                var result = await _contactService.ReadContacts(pageNumber, pageSize, isActive, filter, sort);
+                int? totalCount = result.Count > 0 ? result[0].TotalCount : 0;
+                return StatusCode(200, _requestStatusHelper.response(200, true, "Success", result, totalCount));
+            } catch (Exception ex) {
+                return await HandleException(ex, "ContactController.Read", 500, "Internal Server Error");
+            }
+        }
+
+        [Authorize]
+        [Control(AccessType.Read, Policies.Contact)]
+        [HttpGet("ReadIndividual/{contactId}")]
+        public async Task<IActionResult> ReadIndividual(int contactId) {
+            try {
+                var result = await _contactService.ReadContact(contactId);
+                if (result == null)
+                    return StatusCode(404, _requestStatusHelper.response(404, false, "Contact not found", null, null));
+                return StatusCode(200, _requestStatusHelper.response(200, true, "Success", result, null));
+            } catch (Exception ex) {
+                return await HandleException(ex, "ContactController.ReadIndividual", 500, "Internal Server Error");
+            }
+        }
+
+        [Authorize]
+        [Control(AccessType.Delete, Policies.Contact)]
+        [HttpPost("Delete/{contactId}/{userId}")]
+        public async Task<IActionResult> Delete(int contactId, int userId) {
+            try {
+                var result = await _contactService.DeleteContact(contactId, userId);
+                await _auditService.CreateLog(new ContactAudit {
+                    Action = "Delete",
+                    Details = "Deleted contact ID: " + contactId
+                }, HttpContext.User);
+                return StatusCode(200, _requestStatusHelper.response(200, true, "Contact deleted successfully", result, null));
+            } catch (Exception ex) {
+                return await HandleException(ex, "ContactController.Delete", 500, "Internal Server Error");
+            }
+        }
+
+        [Authorize]
+        [Control(AccessType.Restore, Policies.Contact)]
+        [HttpPost("Restore/{contactId}/{userId}")]
+        public async Task<IActionResult> Restore(int contactId, int userId) {
+            try {
+                var result = await _contactService.RestoreContact(contactId, userId);
+                await _auditService.CreateLog(new ContactAudit {
+                    Action = "Restore",
+                    Details = "Restored contact ID: " + contactId
+                }, HttpContext.User);
+                return StatusCode(200, _requestStatusHelper.response(200, true, "Contact restored successfully", result, null));
+            } catch (Exception ex) {
+                return await HandleException(ex, "ContactController.Restore", 500, "Internal Server Error");
+            }
+        }
+    }
+}

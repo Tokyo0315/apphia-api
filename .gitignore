@@ -1,0 +1,23 @@
+# Build outputs
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Secrets - DO NOT COMMIT
+appsettings.json
+appsettings.*.json
+!appsettings.example.json
+
+# Logs
+*.log
+Logs/
+
+# OS
+Thumbs.db
+.DS_Store
