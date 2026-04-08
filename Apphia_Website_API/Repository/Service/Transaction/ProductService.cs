@@ -43,6 +43,19 @@ namespace Apphia_Website_API.Repository.Service.Transaction {
             }).ToList();
         }
 
+        public async Task<List<ProductWebsiteViewModel>> ReadWebsite(string? category) {
+            var query = _context.Products.Include(p => p.ProductCategory).Where(p => p.IsActive == true);
+            if (!string.IsNullOrEmpty(category)) query = query.Where(p => p.ProductCategory != null && p.ProductCategory.Name == category);
+            var items = await query.OrderByDescending(p => p.CreatedDate).ToListAsync();
+            return items.Select(p => new ProductWebsiteViewModel {
+                Id = p.Id,
+                Name = p.Name,
+                Description = p.Description,
+                Category = p.ProductCategory?.Name ?? "",
+                Image = p.Image != null ? $"/assets/contents/images/products/{p.Image}" : null,
+            }).ToList();
+        }
+
         public async Task<Product?> ReadById(int id) => await _context.Products.Include(p => p.ProductCategory).FirstOrDefaultAsync(p => p.Id == id);
 
         public async Task Update(ProductUpdateViewModel model, int id, int userId, IFormFile? image) {

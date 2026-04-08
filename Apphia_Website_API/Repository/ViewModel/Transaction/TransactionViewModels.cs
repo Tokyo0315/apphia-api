@@ -56,6 +56,13 @@ namespace Apphia_Website_API.Repository.ViewModel.Transaction {
         public string? DeletedBy { get; set; }
         public string? DeletedDate { get; set; }
     }
+    public class ProductWebsiteViewModel {
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string? Description { get; set; }
+        public string Category { get; set; } = string.Empty;
+        public string? Image { get; set; }
+    }
     public class GalleryPhotoReadViewModel {
         public int Id { get; set; }
         public string? Caption { get; set; }

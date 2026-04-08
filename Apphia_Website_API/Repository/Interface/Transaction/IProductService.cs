@@ -5,6 +5,7 @@ namespace Apphia_Website_API.Repository.Interface.Transaction {
     public interface IProductService {
         Task<int> Create(ProductCreateViewModel model, int userId, IFormFile? image);
         Task<List<ProductReadViewModel>> Read(int isActive, int pagenumber, int pagesize, string? filter, string? sort);
+        Task<List<ProductWebsiteViewModel>> ReadWebsite(string? category);
         Task<Product?> ReadById(int id);
         Task Update(ProductUpdateViewModel model, int id, int userId, IFormFile? image);
         Task Delete(int id, int userId);

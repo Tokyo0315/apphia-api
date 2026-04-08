@@ -25,6 +25,16 @@ namespace Apphia_Website_API.Controllers.Transaction {
             _auditService = auditService;
         }
 
+        [HttpGet("Read/Website")]
+        public async Task<IActionResult> ReadWebsite([FromQuery] string? category) {
+            try {
+                var result = await _productService.ReadWebsite(category);
+                return StatusCode(200, _requestStatusHelper.response(200, true, "Success", result, null));
+            } catch (Exception ex) {
+                return await HandleException(ex, "ProductController.ReadWebsite", 500, "Internal Server Error");
+            }
+        }
+
         [Authorize]
         [Control(AccessType.Create, Policies.Product)]
         [HttpPost("Create/{userId}")]
