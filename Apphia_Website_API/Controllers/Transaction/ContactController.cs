@@ -44,7 +44,7 @@ namespace Apphia_Website_API.Controllers.Transaction {
                 }).ToList();
 
                 // Send email notification to all admin recipients with segment "contact"
-                var recipients = await _emailRecipientService.ReadRecipientBaseOnSegment("contact");
+                var recipients = await _emailRecipientService.ReadRecipientBaseOnSegment("Contact");
                 foreach (var r in recipients) {
                     await _apiService.Send(r.email, "contact-us", jsonData);
                 }

@@ -35,7 +35,7 @@ namespace Apphia_Website_API.Repository.Service.Transaction {
                 Inquiry = c.inquiry ?? "",
                 Name = $"{c.firstName} {c.lastName}".Trim(),
                 Email = c.email ?? "",
-                ContactNo = c.contactNo ?? "",
+                ContactNo = !string.IsNullOrEmpty(c.contactNo) ? _aesService.Decrypt(c.contactNo) : "",
                 IsActive = c.IsActive,
                 TotalCount = totalCount,
                 DeletedBy = c.DeletedByUserId != null ? _context.UserAccounts.Include(x => x.Employee).Where(x => x.Id == c.DeletedByUserId).Select(x => x.Employee!.GivenName + " " + x.Employee.LastName).FirstOrDefault() : null,
@@ -46,6 +46,8 @@ namespace Apphia_Website_API.Repository.Service.Transaction {
         public async Task<Contact> ReadContact(int contactId) {
             var contact = await _context.Contacts.FindAsync(contactId);
             if (contact == null) throw new NotFoundResource();
+            if (!string.IsNullOrEmpty(contact.contactNo)) contact.contactNo = _aesService.Decrypt(contact.contactNo);
+            if (!string.IsNullOrEmpty(contact.message)) contact.message = _aesService.Decrypt(contact.message);
             return contact;
         }
 
