@@ -6,6 +6,7 @@ using Apphia_Website_API.Repository.ViewModel.Transaction;
 using Apphia_Website_API.Repository.Model.Audit;
 using Apphia_Website_API.Repository.Configuration.Attribute_Extender;
 using Apphia_Website_API.Repository.Configuration.Enum;
+using Apphia_Website_API.Repository.Interface.SystemSetup;
 
 namespace Apphia_Website_API.Controllers.Transaction {
     [Route("api/[controller]")]
@@ -13,22 +14,46 @@ namespace Apphia_Website_API.Controllers.Transaction {
     public class ContactController : BaseController {
         private readonly IContactService _contactService;
         private readonly IAuditGenericService<ContactAudit> _auditService;
+        private readonly IApiService _apiService;
+        private readonly IEmailRecipientService _emailRecipientService;
 
         public ContactController(
             IContactService contactService,
             IAuditGenericService<ContactAudit> auditService,
+            IApiService apiService,
+            IEmailRecipientService emailRecipientService,
             IConfiguration configuration,
             IAuditLogService auditLogService,
             IRequestStatusHelper requestStatusHelper
         ) : base(configuration, auditLogService, requestStatusHelper) {
             _contactService = contactService;
             _auditService = auditService;
+            _apiService = apiService;
+            _emailRecipientService = emailRecipientService;
         }
 
         [HttpPost("ContactUs")]
         public async Task<IActionResult> ContactUs([FromBody] ContactUsViewModel model) {
             try {
                 var result = await _contactService.Create(model);
+
+                // Build template parameters from form data
+                var jsonData = model.GetType().GetProperties().Select(p => new {
+                    Name = p.Name,
+                    Value = p.GetValue(model)?.ToString() ?? string.Empty,
+                }).ToList();
+
+                // Send email notification to all admin recipients with segment "contact"
+                var recipients = await _emailRecipientService.ReadRecipientBaseOnSegment("contact");
+                foreach (var r in recipients) {
+                    await _apiService.Send(r.email, "contact-us", jsonData);
+                }
+
+                // Send confirmation email to the user
+                if (!string.IsNullOrEmpty(model.email)) {
+                    await _apiService.Send(model.email, "contact-us-response", jsonData);
+                }
+
                 return StatusCode(200, _requestStatusHelper.response(200, true, "Message sent successfully", result, null));
             } catch (Exception ex) {
                 return await HandleException(ex, "ContactController.ContactUs", 500, "Internal Server Error");
