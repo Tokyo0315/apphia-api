@@ -2,10 +2,7 @@ using System.Security.Cryptography;
 using System.Text;
 
 namespace Apphia_Website_API.Utils {
-    public interface IAesService {
-        string Decrypt(string cipherText);
-        string Encrypt(string plainText);
-    }
+    // IAesService → Utils/IAesService.cs
 
     public class AesService(string key) : IAesService {
         private readonly string _key = key;

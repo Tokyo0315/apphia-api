@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Apphia_Website_API.Repository.Interface;
 using Apphia_Website_API.Repository.Interface.SystemSetup;
-using Apphia_Website_API.Repository.ViewModel.SystemSetup;
+using Apphia_Website_API.Repository.ViewModel.SectionFormatting;
 using Apphia_Website_API.Repository.Model.Audit;
 using Apphia_Website_API.Repository.Configuration.Attribute_Extender;
 using Apphia_Website_API.Repository.Configuration.Enum;

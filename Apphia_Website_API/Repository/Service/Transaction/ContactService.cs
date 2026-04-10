@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Apphia_Website_API.Repository.Configuration.Exception_Extender;
 using Apphia_Website_API.Repository.Interface.Transaction;
 using Apphia_Website_API.Repository.Model.Transaction;
-using Apphia_Website_API.Repository.ViewModel.Transaction;
+using Apphia_Website_API.Repository.ViewModel.Common;
 using Apphia_Website_API.Utils;
 
 namespace Apphia_Website_API.Repository.Service.Transaction {

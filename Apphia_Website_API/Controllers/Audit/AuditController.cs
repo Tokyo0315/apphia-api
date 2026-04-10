@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Apphia_Website_API.Dtos;
 using Apphia_Website_API.Utils;
-using Apphia_Website_API.Repository.Interface;
 
 namespace Apphia_Website_API.Controllers.Audit {
     [Route("api/[controller]")]

@@ -42,8 +42,22 @@ namespace Apphia_Website_API.Repository.Service.UserManagement {
         }
 
         public async Task<List<PolicyReadViewModel>> GetPolicyControlById(int policyId, int roleId) {
-            return await _context.RolePolicyControls.Where(rpc => rpc.PolicyId == policyId && rpc.RoleId == roleId && rpc.IsActive == true)
-                .Select(rpc => new PolicyReadViewModel { Id = rpc.Id, Name = rpc.Policy.Name }).ToListAsync();
+            return await (from rpc in _context.RolePolicyControls
+                join p in _context.Policies on rpc.PolicyId equals p.Id
+                join c in _context.Controls on rpc.ControlId equals c.Id
+                where rpc.PolicyId == policyId && rpc.RoleId == roleId && rpc.IsActive == true
+                select new PolicyReadViewModel {
+                    Id = rpc.PolicyId,
+                    Name = p.Name,
+                    Controls = new ControlReadViewModel {
+                        Id = c.Id,
+                        Create = c.Create,
+                        Read = c.Read,
+                        Update = c.Update,
+                        Delete = c.Delete,
+                        Restore = c.Restore
+                    }
+                }).ToListAsync();
         }
     }
 }

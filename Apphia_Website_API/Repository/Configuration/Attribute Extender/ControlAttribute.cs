@@ -7,19 +7,4 @@ namespace Apphia_Website_API.Repository.Configuration.Attribute_Extender {
             Arguments = new object[] { accessType, policy };
         }
     }
-
-    public class ControlFilter : Microsoft.AspNetCore.Mvc.Filters.IAsyncActionFilter {
-        public Policies _policy { get; set; }
-        public AccessType _accessType { get; set; }
-
-        public ControlFilter(AccessType accessType, Policies policy) {
-            _accessType = accessType;
-            _policy = policy;
-        }
-
-        public async Task OnActionExecutionAsync(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext context, Microsoft.AspNetCore.Mvc.Filters.ActionExecutionDelegate next) {
-            // TODO: Implement role-based access control (same as SSCGI pattern)
-            await next();
-        }
-    }
 }

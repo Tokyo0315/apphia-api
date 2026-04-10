@@ -4,7 +4,7 @@ using Apphia_Website_API.Repository.Interface;
 using Apphia_Website_API.Repository.Interface.SystemSetup;
 using Apphia_Website_API.Repository.Model.UserManagement;
 using Apphia_Website_API.Repository.Model.Audit;
-using Apphia_Website_API.Repository.ViewModel.SystemSetup;
+using Apphia_Website_API.Repository.ViewModel.Request.SetupSecurity;
 
 namespace Apphia_Website_API.Controllers.SystemSetup {
     [Route("api/[controller]")]

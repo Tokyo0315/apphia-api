@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Apphia_Website_API.Repository.Interface;
 using Apphia_Website_API.Repository.Configuration;
+using Apphia_Website_API.Repository.Configuration.Helper;
 
 namespace Apphia_Website_API.Controllers {
     public abstract class BaseController : ControllerBase {

@@ -15,8 +15,4 @@ namespace Apphia_Website_API.Repository.Model {
         public DateTime? RestoredDate { get; set; }
     }
 
-    public class SPBaseModel {
-        [Key]
-        public int Id { get; set; }
-    }
 }

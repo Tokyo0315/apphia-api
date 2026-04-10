@@ -1,5 +1,5 @@
 using Apphia_Website_API.Repository.Model.Transaction;
-using Apphia_Website_API.Repository.ViewModel.Transaction;
+using Apphia_Website_API.Repository.ViewModel.Common;
 
 namespace Apphia_Website_API.Repository.Interface.Transaction {
     public interface IContactService {

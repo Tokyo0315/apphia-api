@@ -5,7 +5,7 @@ using Apphia_Website_API.Repository.Interface;
 using Apphia_Website_API.Repository.Interface.SystemSetup;
 using Apphia_Website_API.Repository.Model.Core;
 using Apphia_Website_API.Repository.Model.SystemSetup;
-using Apphia_Website_API.Repository.ViewModel.SystemSetup;
+using Apphia_Website_API.Repository.ViewModel.SectionFormatting;
 
 namespace Apphia_Website_API.Repository.Service.SystemSetup {
     public class SectionFormattingService : ISectionFormattingService {

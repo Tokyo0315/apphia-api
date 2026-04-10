@@ -14,17 +14,4 @@ namespace Apphia_Website_API.Repository.Model.Audit {
         public DateTime CreatedDate { get; set; } = DateTime.Now;
     }
 
-    public class UserAccountAudit : BaseAuditModel { }
-    public class SectionFormattingAudit : BaseAuditModel { }
-    public class RoleAudit : BaseAuditModel { }
-    public class SetupSecurityAudit : BaseAuditModel { }
-    public class WorkflowAudit : BaseAuditModel { }
-    public class EmailRecipientAudit : BaseAuditModel { }
-    public class ContactAudit : BaseAuditModel { }
-    // NEW Apphia-specific audit models
-    public class ProductAudit : BaseAuditModel { }
-    public class ProductCategoryAudit : BaseAuditModel { }
-    public class GalleryPhotoAudit : BaseAuditModel { }
-    public class GalleryAlbumAudit : BaseAuditModel { }
-
 }

@@ -28,9 +28,9 @@ namespace Apphia_Website_API.Controllers.Transaction {
         [Authorize]
         [Control(AccessType.Create, Policies.GalleryAlbum)]
         [HttpPost("Create/{userId}")]
-        public async Task<IActionResult> Create([FromForm] GalleryAlbumCreateViewModel model, IFormFile? thumbnail, int userId) {
+        public async Task<IActionResult> Create([FromBody] GalleryAlbumCreateViewModel model, int userId) {
             try {
-                var result = await _galleryAlbumService.Create(model, userId, thumbnail);
+                var result = await _galleryAlbumService.Create(model, userId, null);
                 await _auditService.CreateLog(new GalleryAlbumAudit {
                     Action = "Create",
                     Details = "Created gallery album: " + model.Name
@@ -70,9 +70,9 @@ namespace Apphia_Website_API.Controllers.Transaction {
         [Authorize]
         [Control(AccessType.Update, Policies.GalleryAlbum)]
         [HttpPost("Update/{id}/{userId}")]
-        public async Task<IActionResult> Update([FromForm] GalleryAlbumUpdateViewModel model, IFormFile? thumbnail, int id, int userId) {
+        public async Task<IActionResult> Update([FromBody] GalleryAlbumUpdateViewModel model, int id, int userId) {
             try {
-                await _galleryAlbumService.Update(model, id, userId, thumbnail);
+                await _galleryAlbumService.Update(model, id, userId, null);
                 await _auditService.CreateLog(new GalleryAlbumAudit {
                     Action = "Update",
                     Details = "Updated gallery album ID: " + id
