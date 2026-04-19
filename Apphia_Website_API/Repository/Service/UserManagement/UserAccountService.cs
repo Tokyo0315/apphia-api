@@ -241,7 +241,8 @@ namespace Apphia_Website_API.Repository.Service.UserManagement {
                 }
             }
 
-            var token = _jwtHelper.GenerateJwtToken(userInfo.Id.ToString(), role);
+            var fullName = $"{employee.GivenName} {employee.LastName}".Trim();
+            var token = _jwtHelper.GenerateJwtToken(userInfo.Id.ToString(), role, employee.Email, fullName);
             return new AuthenticateResponse {
                 userId = userInfo.Id, Token = token,
                 UserFirstname = employee.GivenName, UserLastname = employee.LastName,

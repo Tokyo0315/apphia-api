@@ -9,13 +9,17 @@ obj/
 *.userosscache
 *.sln.docstates
 
-# Secrets - DO NOT COMMIT
-appsettings.json
-appsettings.*.json
+# Secrets - committed for private-repo KT onboarding
+# (un-ignore appsettings.json and appsettings.Development.json)
+# appsettings.json
+# appsettings.*.json
 !appsettings.example.json
 
-# Uploaded content (runtime files, not source)
-Apphia_Website_API/wwwroot/assets/contents/
+# Uploaded content - committed for private-repo KT onboarding
+# Apphia_Website_API/wwwroot/assets/contents/
+
+# Database setup scripts - shared separately, not via git
+*.sql
 
 # Logs
 *.log

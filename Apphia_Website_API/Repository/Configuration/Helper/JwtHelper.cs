@@ -12,7 +12,7 @@ namespace Apphia_Website_API.Repository.Configuration.Helper {
         private readonly IConfiguration _config;
         public JwtHelper(IConfiguration config) { _config = config; }
 
-        public string GenerateJwtToken(string userId, RoleReadViewModel role) {
+        public string GenerateJwtToken(string userId, RoleReadViewModel role, string email = "", string fullName = "") {
             var jwtSetting = new JwtSettings();
             _config.GetSection("Jwt").Bind(jwtSetting);
             var claims = new List<Claim> {
@@ -20,6 +20,8 @@ namespace Apphia_Website_API.Repository.Configuration.Helper {
                 new Claim(ClaimTypes.Role, role.Id.ToString()),
                 new Claim(ClaimTypes.Name, role.Name),
                 new Claim("UserId", userId),
+                new Claim(ClaimTypes.Email, email),
+                new Claim("FullName", fullName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSetting.Key));

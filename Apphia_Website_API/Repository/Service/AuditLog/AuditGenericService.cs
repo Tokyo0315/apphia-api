@@ -20,10 +20,14 @@ namespace Apphia_Website_API.Repository.Service.AuditLog {
             var userId = user.FindFirst("UserId")?.Value ?? "";
             var roleId = user.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value ?? "";
             var roleName = user.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value ?? "";
+            var email = user.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? "";
+            var fullName = user.FindFirst("FullName")?.Value ?? "";
 
             entity.ActionByUserId = userId;
+            entity.ActionByEmail = email;
             entity.ActionByRoleId = roleId;
             entity.ActionByRole = roleName;
+            entity.ActionByName = fullName;
             entity.CreatedDate = DateTime.Now;
 
             _context.Set<T>().Add(entity);
