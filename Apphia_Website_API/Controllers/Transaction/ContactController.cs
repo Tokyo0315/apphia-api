@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
+using Apphia_Website_API.Extension;
 using Apphia_Website_API.Repository.Interface;
 using Apphia_Website_API.Repository.Interface.Transaction;
 using Apphia_Website_API.Repository.ViewModel.Common;
@@ -33,6 +35,7 @@ namespace Apphia_Website_API.Controllers.Transaction {
         }
 
         [HttpPost("ContactUs")]
+        [EnableRateLimiting(RateLimitingExtension.PublicStrict)]
         public async Task<IActionResult> ContactUs([FromBody] ContactUsViewModel model) {
             try {
                 var result = await _contactService.Create(model);

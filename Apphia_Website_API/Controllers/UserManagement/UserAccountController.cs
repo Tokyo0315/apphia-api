@@ -2,6 +2,8 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
+using Apphia_Website_API.Extension;
 using Apphia_Website_API.Repository.Interface;
 using Apphia_Website_API.Repository.Interface.UserManagement;
 using Apphia_Website_API.Repository.Interface.Core;
@@ -36,6 +38,7 @@ namespace Apphia_Website_API.Controllers.UserManagement {
         }
 
         [HttpPost("Login")]
+        [EnableRateLimiting(RateLimitingExtension.PublicStrict)]
         public async Task<IActionResult> Login([FromBody] LoginRequestViewModel loginRequest) {
             try {
                 var result = await _userAccountService.AuthenticateUser(loginRequest);
@@ -223,6 +226,7 @@ namespace Apphia_Website_API.Controllers.UserManagement {
         }
 
         [HttpPost("forgot-password/{email}")]
+        [EnableRateLimiting(RateLimitingExtension.PublicStrict)]
         public async Task<IActionResult> ForgotPassword(string email) {
             try {
                 var result = await _userAccountService.ResetPasswordLink(email);
@@ -233,6 +237,7 @@ namespace Apphia_Website_API.Controllers.UserManagement {
         }
 
         [HttpGet("reset")]
+        [EnableRateLimiting(RateLimitingExtension.PublicStrict)]
         public async Task<IActionResult> ResetPasswordValidity([FromQuery] string userId, [FromQuery] string token) {
             try {
                 var isValid = await _userAccountService.LinkValidity(userId, token);
@@ -245,6 +250,7 @@ namespace Apphia_Website_API.Controllers.UserManagement {
         }
 
         [HttpPost("Success/{userId}")]
+        [EnableRateLimiting(RateLimitingExtension.PublicStrict)]
         public async Task<IActionResult> ChangePassword(int userId, [FromBody] UserAccountChangePassword model) {
             try {
                 var result = await _userAccountService.ChangePassword(userId, model.Password, model.Token);

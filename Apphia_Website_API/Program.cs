@@ -78,6 +78,9 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 builder.Services.AddAuditServices();
 builder.Services.AddSingleton<IPaginationService, PaginationService>();
 
+// Rate limiting
+builder.Services.AddAppRateLimiting();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -131,5 +134,6 @@ app.UseHttpsRedirection();
 app.UseCors("FrontEnd");
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseRateLimiter();
 app.MapControllers();
 app.Run();
